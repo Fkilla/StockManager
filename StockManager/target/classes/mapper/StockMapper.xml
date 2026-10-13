@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="stockMapper">
+
+    <select id="selectStockCnt" resultType="Integer">
+        SELECT COUNT(*)
+        FROM stock
+    </select>
+
+    <select id="selectStockListPaging" parameterType="java.util.HashMap">
+        SELECT
+             stock_code AS stockCode
+            , stock_name AS stockName
+            , market
+            , close_price AS closePrice
+            , change_price AS changePrice
+            , change_rate AS changeRate
+            , volume
+        FROM stock
+        ORDER BY
+            stock_code
+        LIMIT
+              #{currentCount}
+            , #{countPerPage}
+    </select>
+
+    <select id="selectStockList" resultType="vo.StockVO">
+        SELECT
+            stock_code AS stockCode,
+            stock_name AS stockName,
+            market,
+            close_price AS closePrice,
+            change_price AS changePrice,
+            change_rate AS changeRate,
+            volume
+        FROM stock
+        ORDER BY stock_code
+    </select>
+
+    <insert id="insertStock" parameterType="vo.StockVO">
+        INSERT INTO stock
+            (
+                  stock_code
+                , stock_name
+                , market
+                , close_price
+                , change_price
+                , change_rate
+                , open_price
+                , high_price
+                , low_price
+                , volume
+                , trading_value
+                , market_cap
+                , listed_shares
+            )
+        VALUES
+            (
+                  #{stock_code}
+                , #{stock_name}
+                , #{market}
+                , #{close_price}
+                , #{change_price}
+                , #{change_rate}
+                , #{open_price}
+                , #{high_price}
+                , #{low_price}
+                , #{volume}
+                , #{trading_value}
+                , #{market_cap}
+                , #{listed_shares}
+            )
+    </insert>
+
+    <update id="updateStock" parameterType="vo.StockVO">
+        UPDATE stock
+        SET
+              stock_name = #{stock_name}
+            , market =  #{market}
+            , close_price =  #{close_price}
+            , change_price =  #{change_price}
+            , change_rate =  #{change_rate}
+            , open_price =  #{open_price}
+            , high_price =  #{high_price}
+            , low_price =  #{low_price}
+            , volume =  #{volume}
+            , trading_value =  #{trading_value}
+            , market_cap =  #{market_cap}
+            , listed_shares = #{listed_shares}
+        WHERE    1=1
+            AND  stock_code = #{stock_code}
+    </update>
+</mapper>
